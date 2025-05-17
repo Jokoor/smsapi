@@ -1,0 +1,62 @@
+---
+title: JSMS API Documentation
+description: Comprehensive documentation for the JSMS API endpoints
+---
+
+# JSMS API Documentation
+
+Welcome to the JSMS API documentation. This documentation provides comprehensive information about the JSMS API endpoints and how to use them.
+
+## API Resources
+
+- [Campaign API](./campaign) - Manage SMS campaigns
+- [Contact API](./contact) - Manage contacts and contact groups
+- [SMS API](./sms) - Send and manage SMS messages
+- [Template API](./template) - Manage SMS templates
+
+## Authentication
+
+All API requests require authentication. Include your API token in the request header:
+
+```http
+Authorization: Bearer YOUR_API_TOKEN
+```
+
+## Base URL
+
+All API endpoints are relative to the base URL:
+
+```http
+https://api.jsms.com
+```
+
+## Response Format
+
+All API responses follow a standard format:
+
+```json
+{
+  "http_status_code": 200,
+  "data": {
+    // Response data
+  }
+}
+```
+
+## Error Handling
+
+API errors follow a standard format:
+
+```json
+{
+  "http_status_code": 400,
+  "error": "Error message"
+}
+```
+
+Common HTTP status codes:
+- 200: Success
+- 400: Bad Request
+- 401: Unauthorized
+- 404: Not Found
+- 500: Internal Server Error 

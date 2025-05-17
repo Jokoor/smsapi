@@ -1,0 +1,421 @@
+---
+title: Template API
+description: Manage SMS templates with the Template API
+---
+
+# Template API
+
+The Template API allows you to create and manage SMS templates for use in campaigns and individual messages.
+
+## Template Endpoints
+
+### List Templates
+
+Retrieves a list of SMS templates.
+
+```http
+GET /api/resource/sms_template/all
+```
+
+#### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| offset | integer | No | Number of records to skip (default: 0) |
+| limit | integer | No | Number of records to return (default: 20) |
+| search_text | string | No | Search templates by name or content |
+
+#### Example Request
+
+<CodeGroup title="List Templates">
+```javascript
+const response = await fetch('https://api.jsms.com/api/resource/sms_template/all?offset=0&limit=20&search_text=welcome', {
+  headers: {
+    'Authorization': 'Bearer YOUR_API_TOKEN'
+  }
+});
+
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://api.jsms.com/api/resource/sms_template/all',
+    headers={'Authorization': 'Bearer YOUR_API_TOKEN'},
+    params={
+        'offset': 0,
+        'limit': 20,
+        'search_text': 'welcome'
+    }
+)
+
+data = response.json()
+```
+
+```php
+<?php
+
+$ch = curl_init('https://api.jsms.com/api/resource/sms_template/all?offset=0&limit=20&search_text=welcome');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Authorization: Bearer YOUR_API_TOKEN'
+]);
+
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+```
+</CodeGroup>
+
+#### Response
+
+```json
+{
+  "http_status_code": 200,
+  "data": {
+    "total": "integer",
+    "items": [
+      {
+        "id": "string",
+        "name": "string",
+        "content": "string",
+        "created_at": "datetime",
+        "updated_at": "datetime"
+      }
+    ],
+    "offset": "integer",
+    "limit": "integer"
+  }
+}
+```
+
+### Create Template
+
+Creates a new SMS template.
+
+```http
+POST /api/resource/sms_template/create
+```
+
+#### Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| name | string | Yes | Template name |
+| content | string | Yes | Template content |
+
+#### Example Request
+
+<CodeGroup title="Create Template">
+```javascript
+const response = await fetch('https://api.jsms.com/api/resource/sms_template/create', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: 'Welcome Message',
+    content: 'Welcome to our service! Your account has been created successfully.'
+  })
+});
+
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.post(
+    'https://api.jsms.com/api/resource/sms_template/create',
+    headers={
+        'Authorization': 'Bearer YOUR_API_TOKEN',
+        'Content-Type': 'application/json'
+    },
+    json={
+        'name': 'Welcome Message',
+        'content': 'Welcome to our service! Your account has been created successfully.'
+    }
+)
+
+data = response.json()
+```
+
+```php
+<?php
+
+$ch = curl_init('https://api.jsms.com/api/resource/sms_template/create');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Authorization: Bearer YOUR_API_TOKEN',
+    'Content-Type: application/json'
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    'name' => 'Welcome Message',
+    'content' => 'Welcome to our service! Your account has been created successfully.'
+]));
+
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+```
+</CodeGroup>
+
+#### Response
+
+```json
+{
+  "http_status_code": 200,
+  "data": {
+    "id": "string",
+    "name": "string",
+    "content": "string",
+    "created_at": "datetime",
+    "updated_at": "datetime"
+  }
+}
+```
+
+### Get Template
+
+Retrieves a specific template.
+
+```http
+GET /api/resource/sms_template/get
+```
+
+#### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| id | string | Yes | Template ID |
+
+#### Example Request
+
+<CodeGroup title="Get Template">
+```javascript
+const response = await fetch('https://api.jsms.com/api/resource/sms_template/get?id=template1', {
+  headers: {
+    'Authorization': 'Bearer YOUR_API_TOKEN'
+  }
+});
+
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://api.jsms.com/api/resource/sms_template/get',
+    headers={'Authorization': 'Bearer YOUR_API_TOKEN'},
+    params={'id': 'template1'}
+)
+
+data = response.json()
+```
+
+```php
+<?php
+
+$ch = curl_init('https://api.jsms.com/api/resource/sms_template/get?id=template1');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Authorization: Bearer YOUR_API_TOKEN'
+]);
+
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+```
+</CodeGroup>
+
+#### Response
+
+```json
+{
+  "http_status_code": 200,
+  "data": {
+    "id": "string",
+    "name": "string",
+    "content": "string",
+    "created_at": "datetime",
+    "updated_at": "datetime"
+  }
+}
+```
+
+### Update Template
+
+Updates an existing template.
+
+```http
+PUT /api/resource/sms_template/update
+```
+
+#### Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| id | string | Yes | Template ID |
+| name | string | No | New template name |
+| content | string | No | New template content |
+
+#### Example Request
+
+<CodeGroup title="Update Template">
+```javascript
+const response = await fetch('https://api.jsms.com/api/resource/sms_template/update', {
+  method: 'PUT',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    id: 'template1',
+    name: 'Updated Welcome Message',
+    content: 'Welcome to our service! Your account has been created successfully. Enjoy!'
+  })
+});
+
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.put(
+    'https://api.jsms.com/api/resource/sms_template/update',
+    headers={
+        'Authorization': 'Bearer YOUR_API_TOKEN',
+        'Content-Type': 'application/json'
+    },
+    json={
+        'id': 'template1',
+        'name': 'Updated Welcome Message',
+        'content': 'Welcome to our service! Your account has been created successfully. Enjoy!'
+    }
+)
+
+data = response.json()
+```
+
+```php
+<?php
+
+$ch = curl_init('https://api.jsms.com/api/resource/sms_template/update');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Authorization: Bearer YOUR_API_TOKEN',
+    'Content-Type: application/json'
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    'id' => 'template1',
+    'name' => 'Updated Welcome Message',
+    'content' => 'Welcome to our service! Your account has been created successfully. Enjoy!'
+]));
+
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+```
+</CodeGroup>
+
+#### Response
+
+```json
+{
+  "http_status_code": 200,
+  "data": {
+    "id": "string",
+    "name": "string",
+    "content": "string",
+    "created_at": "datetime",
+    "updated_at": "datetime"
+  }
+}
+```
+
+### Delete Template
+
+Deletes a template.
+
+```http
+DELETE /api/resource/sms_template/delete
+```
+
+#### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| id | string | Yes | Template ID |
+
+#### Example Request
+
+<CodeGroup title="Delete Template">
+```javascript
+const response = await fetch('https://api.jsms.com/api/resource/sms_template/delete?id=template1', {
+  method: 'DELETE',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_TOKEN'
+  }
+});
+
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.delete(
+    'https://api.jsms.com/api/resource/sms_template/delete',
+    headers={'Authorization': 'Bearer YOUR_API_TOKEN'},
+    params={'id': 'template1'}
+)
+
+data = response.json()
+```
+
+```php
+<?php
+
+$ch = curl_init('https://api.jsms.com/api/resource/sms_template/delete?id=template1');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Authorization: Bearer YOUR_API_TOKEN'
+]);
+
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+```
+</CodeGroup>
+
+#### Response
+
+```json
+{
+  "http_status_code": 200,
+  "data": {
+    "message": "Template deleted successfully"
+  }
+}
+```
+
+## Error Responses
+
+All endpoints may return the following error responses:
+
+```json
+{
+  "http_status_code": 404,
+  "error": "Template not found"
+}
+```
+
+```json
+{
+  "http_status_code": 500,
+  "error": "Internal server error"
+}
+``` 

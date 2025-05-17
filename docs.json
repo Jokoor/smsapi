@@ -1,0 +1,61 @@
+{
+  "name": "JSMS API Documentation",
+  "description": "Comprehensive documentation for the JSMS API endpoints",
+  "sidebar": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        {
+          "title": "Introduction",
+          "href": "/",
+          "icon": "rocket"
+        },
+        {
+          "title": "Authentication",
+          "href": "/authentication",
+          "icon": "key"
+        }
+      ]
+    },
+    {
+      "group": "API Resources",
+      "pages": [
+        {
+          "title": "Campaign API",
+          "href": "/campaign",
+          "icon": "megaphone"
+        },
+        {
+          "title": "Contact API",
+          "href": "/contact",
+          "icon": "users"
+        },
+        {
+          "title": "SMS API",
+          "href": "/sms",
+          "icon": "message-square"
+        },
+        {
+          "title": "Template API",
+          "href": "/template",
+          "icon": "file-text"
+        }
+      ]
+    },
+    {
+      "group": "Guides",
+      "pages": [
+        {
+          "title": "Best Practices",
+          "href": "/guides/best-practices",
+          "icon": "star"
+        },
+        {
+          "title": "Error Handling",
+          "href": "/guides/error-handling",
+          "icon": "alert-triangle"
+        }
+      ]
+    }
+  ]
+} 
