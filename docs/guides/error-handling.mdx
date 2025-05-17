@@ -1,0 +1,246 @@
+---
+title: Error Handling
+description: Learn how to handle errors in the JSMS API
+---
+
+# Error Handling
+
+This guide explains how to handle various types of errors that may occur when using the JSMS API.
+
+## HTTP Status Codes
+
+The JSMS API uses standard HTTP status codes to indicate the success or failure of requests:
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Success |
+| 400 | Bad Request |
+| 401 | Unauthorized |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 429 | Too Many Requests |
+| 500 | Internal Server Error |
+
+## Error Response Format
+
+All error responses follow a standard format:
+
+```json
+{
+  "http_status_code": 400,
+  "error": "Error message"
+}
+```
+
+## Common Errors
+
+### Authentication Errors (401)
+
+```json
+{
+  "http_status_code": 401,
+  "error": "Invalid authentication credentials"
+}
+```
+
+**How to handle:**
+1. Verify your API credentials
+2. Check the Authorization header format
+3. Ensure your API key is active
+
+### Bad Request Errors (400)
+
+```json
+{
+  "http_status_code": 400,
+  "error": "Invalid phone number format"
+}
+```
+
+**How to handle:**
+1. Validate request parameters
+2. Check required fields
+3. Verify data formats
+
+### Not Found Errors (404)
+
+```json
+{
+  "http_status_code": 404,
+  "error": "Resource not found"
+}
+```
+
+**How to handle:**
+1. Verify resource IDs
+2. Check if the resource exists
+3. Ensure you have proper permissions
+
+### Rate Limit Errors (429)
+
+```json
+{
+  "http_status_code": 429,
+  "error": "Too many requests"
+}
+```
+
+**How to handle:**
+1. Implement exponential backoff
+2. Reduce request frequency
+3. Use batch operations
+
+### Server Errors (500)
+
+```json
+{
+  "http_status_code": 500,
+  "error": "Internal server error"
+}
+```
+
+**How to handle:**
+1. Retry the request
+2. Contact support if persistent
+3. Check system status
+
+## Best Practices
+
+### Error Handling in Code
+
+<CodeGroup title="Error Handling Examples">
+```javascript
+async function sendSMS(phone, message) {
+  try {
+    const response = await fetch('https://sms.jokoor.com/api/sms/send', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'token YOUR_API_KEY:YOUR_API_SECRET',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ phone, message })
+    });
+
+    const data = await response.json();
+
+    if (response.status !== 200) {
+      throw new Error(data.error);
+    }
+
+    return data;
+  } catch (error) {
+    // Handle specific error cases
+    if (error.message.includes('Invalid phone number')) {
+      // Handle invalid phone number
+    } else if (error.message.includes('Rate limit')) {
+      // Implement retry logic
+    }
+    throw error;
+  }
+}
+```
+
+```python
+import requests
+from requests.exceptions import RequestException
+
+def send_sms(phone, message):
+    try:
+        response = requests.post(
+            'https://sms.jokoor.com/api/sms/send',
+            headers={
+                'Authorization': 'token YOUR_API_KEY:YOUR_API_SECRET',
+                'Content-Type': 'application/json'
+            },
+            json={'phone': phone, 'message': message}
+        )
+        
+        data = response.json()
+        
+        if response.status_code != 200:
+            raise Exception(data['error'])
+            
+        return data
+        
+    except RequestException as e:
+        # Handle network errors
+        raise Exception(f"Network error: {str(e)}")
+    except Exception as e:
+        # Handle other errors
+        raise Exception(f"Error sending SMS: {str(e)}")
+```
+
+```php
+<?php
+
+function sendSMS($phone, $message) {
+    try {
+        $ch = curl_init('https://sms.jokoor.com/api/sms/send');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Authorization: token YOUR_API_KEY:YOUR_API_SECRET',
+            'Content-Type: application/json'
+        ]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+            'phone' => $phone,
+            'message' => $message
+        ]));
+
+        $response = curl_exec($ch);
+        $data = json_decode($response, true);
+        
+        if (curl_getinfo($ch, CURLINFO_HTTP_CODE) !== 200) {
+            throw new Exception($data['error']);
+        }
+        
+        return $data;
+        
+    } catch (Exception $e) {
+        // Handle specific error cases
+        if (strpos($e->getMessage(), 'Invalid phone number') !== false) {
+            // Handle invalid phone number
+        } else if (strpos($e->getMessage(), 'Rate limit') !== false) {
+            // Implement retry logic
+        }
+        throw $e;
+    }
+}
+```
+</CodeGroup>
+
+### Retry Logic
+
+1. **Exponential Backoff**
+   - Start with a short delay
+   - Double the delay after each retry
+   - Set a maximum number of retries
+
+2. **Idempotency**
+   - Use unique request IDs
+   - Handle duplicate requests gracefully
+   - Maintain request logs
+
+### Logging
+
+1. **Error Logging**
+   - Log all API errors
+   - Include request details
+   - Track error patterns
+
+2. **Monitoring**
+   - Set up error alerts
+   - Monitor error rates
+   - Track API performance
+
+## Support
+
+If you encounter persistent errors:
+
+1. Check the API status page
+2. Review the error logs
+3. Contact support with:
+   - Error message
+   - Request details
+   - Response headers
+   - Timestamp 
